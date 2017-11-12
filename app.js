@@ -11,7 +11,8 @@ var options = {
 };
 
 //URL de conexion a la base de datos.
-var uri = "mongodb://admin:UfEisHW8rEzt4WTc@desarrollo-shard-00-00-2pshm.mongodb.net:27017,desarrollo-shard-00-01-2pshm.mongodb.net:27017,desarrollo-shard-00-02-2pshm.mongodb.net:27017/test?ssl=true&replicaSet=Desarrollo-shard-0&authSource=admin";
+//var uri = "mongodb://admin:UfEisHW8rEzt4WTc@desarrollo-shard-00-00-2pshm.mongodb.net:27017,desarrollo-shard-00-01-2pshm.mongodb.net:27017,desarrollo-shard-00-02-2pshm.mongodb.net:27017/test?ssl=true&replicaSet=Desarrollo-shard-0&authSource=admin";
+var uri = "mongodb://CON089/Aquosa";
 
 //Conexion a la base de datos posta.
 MongoClient.connect(uri,options, function(err, db) {
@@ -48,8 +49,8 @@ MongoClient.connect(uri,options, function(err, db) {
      else{
        //Logeo que obtengo la configuracion esperada.
        console.log(resultado);
-       console.log("CLIENT ID: " + resultado[0].Client_id);
        console.log("CLIENT SECRET: " + resultado[0].Client_secret);
+       console.log("CLIENT ID: " + resultado[0].Client_id);
 
        //Instancio el objeto de MercadoPago con mis credenciales.
        var mp = new MP (resultado[0].Client_id, resultado[0].Client_secret);
@@ -110,6 +111,10 @@ MongoClient.connect(uri,options, function(err, db) {
            });
         }
       });
+
+      mp.post ({
+                "uri": "/v1/payments",
+                "data": payment_data});
      }
    })
    functions.closeIdleDb(db);
